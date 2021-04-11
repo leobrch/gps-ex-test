@@ -6,5 +6,5 @@ import org.springframework.web.multipart.MultipartFile;
 public interface IGPSService {
     AppStatus getLatestTrack();
     AppStatus uploadFile(MultipartFile file);
-    AppStatus getGPXDetailByUserId();
+    AppStatus getGPXDetailByUserId(Long id);
 }

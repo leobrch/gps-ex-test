@@ -11,7 +11,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "waypoint")
-public class Waypoint extends AbstractEntity {
+public class WaypointSegment extends AbstractEntity {
 
     @Column(name = "ele")
     private BigDecimal ele;
@@ -32,8 +32,8 @@ public class Waypoint extends AbstractEntity {
     private BigDecimal lon;
 
     @ManyToOne
-    @JoinColumn(name="gps_id", nullable=false)
-    private GPS gpsWpt;
+    @JoinColumn(name="trk_seg_id", nullable=false)
+    private TrackSegment trkSeg;
 
     public BigDecimal getEle() {
         return ele;
@@ -83,16 +83,24 @@ public class Waypoint extends AbstractEntity {
         this.lon = lon;
     }
 
+    public TrackSegment getTrkSeg() {
+        return trkSeg;
+    }
+
+    public void setTrkSeg(TrackSegment trkSeg) {
+        this.trkSeg = trkSeg;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Waypoint waypoint = (Waypoint) o;
-        return Objects.equals(ele, waypoint.ele) && Objects.equals(time, waypoint.time) && Objects.equals(name, waypoint.name) && Objects.equals(sym, waypoint.sym) && Objects.equals(lat, waypoint.lat) && Objects.equals(lon, waypoint.lon) && Objects.equals(gpsWpt, waypoint.gpsWpt);
+        WaypointSegment that = (WaypointSegment) o;
+        return Objects.equals(ele, that.ele) && Objects.equals(time, that.time) && Objects.equals(name, that.name) && Objects.equals(sym, that.sym) && Objects.equals(lat, that.lat) && Objects.equals(lon, that.lon) && Objects.equals(trkSeg, that.trkSeg);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ele, time, name, sym, lat, lon, gpsWpt);
+        return Objects.hash(ele, time, name, sym, lat, lon, trkSeg);
     }
 }

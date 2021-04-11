@@ -8,12 +8,8 @@ public class StatusFactory {
         return new AppStatus(status, message, data);
     }
 
-    public static <T> AppStatus ofOk() {
-        return new AppStatus(HttpStatus.OK, HttpStatus.OK.getReasonPhrase(), null);
-    }
-
-    public static <T> AppStatus ofFound(T data) {
-        return new AppStatus(HttpStatus.FOUND, HttpStatus.FOUND.getReasonPhrase(), data);
+    public static <T> AppStatus ofOk(T data) {
+        return new AppStatus(HttpStatus.OK, HttpStatus.OK.getReasonPhrase(), data);
     }
 
     public static <T> AppStatus ofNotFound() {

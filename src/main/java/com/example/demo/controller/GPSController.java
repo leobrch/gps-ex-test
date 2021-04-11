@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.service.IGPSService;
 import com.example.demo.utils.RequestUtils;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,6 +29,6 @@ public class GPSController {
 
     @GetMapping(path = "/detail/{id}")
     public ResponseEntity<Object> getTrackDetailByTrackId(@PathVariable("id") Long id) {
-        return RequestUtils.getResponse(gpsService.getGPXDetailByUserId());
+        return RequestUtils.getResponse(gpsService.getGPXDetailByUserId(id));
     }
 }
