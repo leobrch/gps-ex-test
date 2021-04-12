@@ -7,7 +7,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 @Table(name = "waypoint")
@@ -32,8 +31,21 @@ public class Waypoint extends AbstractEntity {
     private BigDecimal lon;
 
     @ManyToOne
-    @JoinColumn(name="gps_id", nullable=false)
+    @JoinColumn(name = "gps_id")
     private GPS gpsWpt;
+
+    @ManyToOne
+    @JoinColumn(name = "trk_seg_id")
+    private TrackSegment trkSeg;
+
+    public Waypoint(BigDecimal ele, LocalDateTime time, String name, String sym, BigDecimal lat, BigDecimal lon) {
+        this.ele = ele;
+        this.time = time;
+        this.name = name;
+        this.sym = sym;
+        this.lat = lat;
+        this.lon = lon;
+    }
 
     public BigDecimal getEle() {
         return ele;
@@ -83,16 +95,19 @@ public class Waypoint extends AbstractEntity {
         this.lon = lon;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Waypoint waypoint = (Waypoint) o;
-        return Objects.equals(ele, waypoint.ele) && Objects.equals(time, waypoint.time) && Objects.equals(name, waypoint.name) && Objects.equals(sym, waypoint.sym) && Objects.equals(lat, waypoint.lat) && Objects.equals(lon, waypoint.lon) && Objects.equals(gpsWpt, waypoint.gpsWpt);
+    public GPS getGpsWpt() {
+        return gpsWpt;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(ele, time, name, sym, lat, lon, gpsWpt);
+    public void setGpsWpt(GPS gpsWpt) {
+        this.gpsWpt = gpsWpt;
+    }
+
+    public TrackSegment getTrkSeg() {
+        return trkSeg;
+    }
+
+    public void setTrkSeg(TrackSegment trkSeg) {
+        this.trkSeg = trkSeg;
     }
 }

@@ -5,4 +5,5 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface IXMLConverter{
     GpxType unmarshall(MultipartFile file);
+    boolean validateXMLSchema(MultipartFile xml);
 }

@@ -7,24 +7,27 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.Objects;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "trackSegment")
 public class TrackSegment extends AbstractEntity {
     @OneToMany(mappedBy = "trkSeg", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private Set<WaypointSegment> trkpt;
+    private List<Waypoint> trkpt;
 
     @ManyToOne
-    @JoinColumn(name = "trk_id", nullable = false)
+    @JoinColumn(name = "trk_id")
     private Track trkSeg;
 
-    public Set<WaypointSegment> getTrkpt() {
+    public TrackSegment(List<Waypoint> trkpt) {
+        this.trkpt = trkpt;
+    }
+
+    public List<Waypoint> getTrkpt() {
         return trkpt;
     }
 
-    public void setTrkpt(Set<WaypointSegment> trkpt) {
+    public void setTrkpt(List<Waypoint> trkpt) {
         this.trkpt = trkpt;
     }
 
@@ -34,18 +37,5 @@ public class TrackSegment extends AbstractEntity {
 
     public void setTrkSeg(Track trkSeg) {
         this.trkSeg = trkSeg;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TrackSegment that = (TrackSegment) o;
-        return Objects.equals(trkpt, that.trkpt) && Objects.equals(trkSeg, that.trkSeg);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(trkpt, trkSeg);
     }
 }

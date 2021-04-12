@@ -12,7 +12,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "gps")
@@ -22,10 +22,10 @@ public class GPS extends AbstractEntity {
     private Metadata metadata;
 
     @OneToMany(mappedBy = "gpsWpt", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private Set<Waypoint> wpt;
+    private List<Waypoint> wpt;
 
     @OneToMany(mappedBy="gpsTrk", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private Set<Track> trk;
+    private List<Track> trk;
 
     @Column(name = "created_date")
     private LocalDateTime createdDate;
@@ -53,19 +53,19 @@ public class GPS extends AbstractEntity {
         this.metadata = metadata;
     }
 
-    public Set<Waypoint> getWpt() {
+    public List<Waypoint> getWpt() {
         return wpt;
     }
 
-    public void setWpt(Set<Waypoint> wpt) {
+    public void setWpt(List<Waypoint> wpt) {
         this.wpt = wpt;
     }
 
-    public Set<Track> getTrk() {
+    public List<Track> getTrk() {
         return trk;
     }
 
-    public void setTrk(Set<Track> trk) {
+    public void setTrk(List<Track> trk) {
         this.trk = trk;
     }
 

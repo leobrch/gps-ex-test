@@ -5,11 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.util.Objects;
 
 @Entity
 @Table(name = "link")
-public class LinkType extends AbstractEntity {
+public class Link extends AbstractEntity {
 
     @Column(name = "text")
     private String text;
@@ -21,8 +20,22 @@ public class LinkType extends AbstractEntity {
     private String href;
 
     @ManyToOne
-    @JoinColumn(name = "trk_id", nullable = false)
+    @JoinColumn(name = "trk_id")
     private Track trkLink;
+
+    @ManyToOne
+    @JoinColumn(name = "metadata_id")
+    private Metadata metadata;
+
+    public Link(String text) {
+        this.text = text;
+    }
+
+    public Link(String text, String type, String href) {
+        this.text = text;
+        this.type = type;
+        this.href = href;
+    }
 
     public String getText() {
         return text;
@@ -56,16 +69,11 @@ public class LinkType extends AbstractEntity {
         this.trkLink = trkLink;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        LinkType linkType = (LinkType) o;
-        return Objects.equals(text, linkType.text) && Objects.equals(type, linkType.type) && Objects.equals(href, linkType.href) && Objects.equals(trkLink, linkType.trkLink);
+    public Metadata getMetadata() {
+        return metadata;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(text, type, href, trkLink);
+    public void setMetadata(Metadata metadata) {
+        this.metadata = metadata;
     }
 }

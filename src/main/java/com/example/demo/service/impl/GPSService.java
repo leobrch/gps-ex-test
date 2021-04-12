@@ -2,19 +2,37 @@ package com.example.demo.service.impl;
 
 import com.example.demo.constant.status.AppStatus;
 import com.example.demo.constant.status.StatusFactory;
+import com.example.demo.domain.GPS;
+import com.example.demo.domain.Track;
+import com.example.demo.domain.Waypoint;
 import com.example.demo.domain.jaxb2.GpxType;
-import com.example.demo.exception.CustomException;
+import com.example.demo.domain.jaxb2.MetadataType;
+import com.example.demo.domain.jaxb2.TrkType;
+import com.example.demo.domain.jaxb2.WptType;
+import com.example.demo.repository.GPSRepository;
+import com.example.demo.service.IConverterService;
 import com.example.demo.service.IGPSService;
+import com.example.demo.service.IService;
 import com.example.demo.service.IXMLConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
-public class GPSService implements IGPSService {
+public class GPSService implements IGPSService, IService<GPS> {
 
     @Autowired
     private IXMLConverter xmlConverter;
+
+    @Autowired
+    private IConverterService converterService;
+
+    @Autowired
+    private GPSRepository gpsRepository;
 
     @Override
     public AppStatus getLatestTrack() {
@@ -23,18 +41,55 @@ public class GPSService implements IGPSService {
 
     @Override
     public AppStatus uploadFile(MultipartFile file) {
-
-        if (file.isEmpty()) {
-            throw new CustomException("File should not be empty.");
-        }
-
         GpxType gpxType = xmlConverter.unmarshall(file);
 
-        return StatusFactory.ofOk(gpxType);
+        if (gpxType == null) {
+            return StatusFactory.ofInternalError(null);
+        }
+
+        GPS gps = new GPS();
+
+        MetadataType metadataType = gpxType.getMetadata();
+        if (metadataType != null) {
+            gps.setMetadata(converterService.convertMetadata(metadataType));
+        }
+
+        List<WptType> wptTypes = gpxType.getWpt();
+        if (!CollectionUtils.isEmpty(wptTypes)) {
+            List<Waypoint> waypoints = wptTypes.stream()
+                    .map(wptType -> converterService.convertWaypoint(wptType))
+                    .collect(Collectors.toList());
+            gps.setWpt(waypoints);
+        }
+
+        List<TrkType> trkTypes = gpxType.getTrk();
+        if (!CollectionUtils.isEmpty(trkTypes)) {
+            List<Track> tracks = trkTypes.stream()
+                    .map(trkType -> converterService.convertTrack(trkType))
+                    .collect(Collectors.toList());
+            gps.setTrk(tracks);
+        }
+
+        return StatusFactory.ofOk(gps);
     }
 
     @Override
     public AppStatus getGPXDetailByUserId(Long id) {
         return null;
+    }
+
+    @Override
+    public void create(GPS gps) {
+        gpsRepository.save(gps);
+    }
+
+    @Override
+    public void update(GPS gps) {
+
+    }
+
+    @Override
+    public void delete(Long id) {
+
     }
 }

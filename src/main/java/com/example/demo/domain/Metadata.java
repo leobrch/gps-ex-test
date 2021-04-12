@@ -1,9 +1,13 @@
 package com.example.demo.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "metadata")
@@ -18,8 +22,8 @@ public class Metadata extends AbstractEntity {
     @Column(name = "author")
     private String author;
 
-    @Column(name = "link")
-    private String link;
+    @OneToMany(mappedBy = "metadata", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Link> link;
 
     @Column(name = "time")
     private LocalDateTime time;
@@ -48,11 +52,11 @@ public class Metadata extends AbstractEntity {
         this.author = author;
     }
 
-    public String getLink() {
+    public List<Link> getLink() {
         return link;
     }
 
-    public void setLink(String link) {
+    public void setLink(List<Link> link) {
         this.link = link;
     }
 

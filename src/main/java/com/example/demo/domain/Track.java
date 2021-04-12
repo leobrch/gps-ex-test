@@ -9,8 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.Objects;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "track")
@@ -23,14 +22,21 @@ public class Track extends AbstractEntity {
     private String desc;
 
     @OneToMany(mappedBy = "trkLink", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private Set<LinkType> link;
+    private List<Link> link;
 
     @OneToMany(mappedBy = "trkSeg", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private Set<TrackSegment> trkseg;
+    private List<TrackSegment> trkseg;
 
     @ManyToOne
-    @JoinColumn(name = "gps_id", nullable = false)
+    @JoinColumn(name = "gps_id")
     private GPS gpsTrk;
+
+    public Track(String name, String desc, List<Link> link, List<TrackSegment> trkseg) {
+        this.name = name;
+        this.desc = desc;
+        this.link = link;
+        this.trkseg = trkseg;
+    }
 
     public String getName() {
         return name;
@@ -48,19 +54,19 @@ public class Track extends AbstractEntity {
         this.desc = desc;
     }
 
-    public Set<LinkType> getLink() {
+    public List<Link> getLink() {
         return link;
     }
 
-    public void setLink(Set<LinkType> link) {
+    public void setLink(List<Link> link) {
         this.link = link;
     }
 
-    public Set<TrackSegment> getTrkseg() {
+    public List<TrackSegment> getTrkseg() {
         return trkseg;
     }
 
-    public void setTrkseg(Set<TrackSegment> trkseg) {
+    public void setTrkseg(List<TrackSegment> trkseg) {
         this.trkseg = trkseg;
     }
 
@@ -70,18 +76,5 @@ public class Track extends AbstractEntity {
 
     public void setGpsTrk(GPS gpsTrk) {
         this.gpsTrk = gpsTrk;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Track track = (Track) o;
-        return Objects.equals(name, track.name) && Objects.equals(desc, track.desc) && Objects.equals(link, track.link) && Objects.equals(trkseg, track.trkseg) && Objects.equals(gpsTrk, track.gpsTrk);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, desc, link, trkseg, gpsTrk);
     }
 }
