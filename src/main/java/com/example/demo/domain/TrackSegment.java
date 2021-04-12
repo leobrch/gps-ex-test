@@ -1,5 +1,8 @@
 package com.example.demo.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,11 +16,16 @@ import java.util.List;
 @Table(name = "trackSegment")
 public class TrackSegment extends AbstractEntity {
     @OneToMany(mappedBy = "trkSeg", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JsonManagedReference
     private List<Waypoint> trkpt;
 
     @ManyToOne
     @JoinColumn(name = "trk_id")
+    @JsonBackReference
     private Track trkSeg;
+
+    public TrackSegment() {
+    }
 
     public TrackSegment(List<Waypoint> trkpt) {
         this.trkpt = trkpt;

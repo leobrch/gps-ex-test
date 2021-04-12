@@ -1,4 +1,6 @@
 package com.example.demo.service;
 
-public interface IMetadataService {
+import com.example.demo.domain.Metadata;
+
+public interface IMetadataService extends IService<Metadata> {
 }

@@ -2,20 +2,23 @@ package com.example.demo.service.impl;
 
 import com.example.demo.domain.Link;
 import com.example.demo.repository.LinkRepository;
-import com.example.demo.service.IService;
-import com.example.demo.service.IMetadataService;
+import com.example.demo.service.ILinkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
-public class LinkTypeService implements IMetadataService, IService<Link> {
+public class LinkTypeService implements ILinkService {
 
     @Autowired
     private LinkRepository linkRepository;
 
+    @Transactional
     @Override
-    public void create(Link link) {
-
+    public Link create(Link link) {
+        return linkRepository.save(link);
     }
 
     @Override
@@ -26,5 +29,10 @@ public class LinkTypeService implements IMetadataService, IService<Link> {
     @Override
     public void delete(Long id) {
 
+    }
+
+    @Override
+    public List<Link> bulkCreate(List<Link> links) {
+        return linkRepository.save(links);
     }
 }

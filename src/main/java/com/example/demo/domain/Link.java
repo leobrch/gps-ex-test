@@ -1,5 +1,7 @@
 package com.example.demo.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -21,11 +23,16 @@ public class Link extends AbstractEntity {
 
     @ManyToOne
     @JoinColumn(name = "trk_id")
+    @JsonBackReference
     private Track trkLink;
 
     @ManyToOne
     @JoinColumn(name = "metadata_id")
+    @JsonBackReference
     private Metadata metadata;
+
+    public Link() {
+    }
 
     public Link(String text) {
         this.text = text;

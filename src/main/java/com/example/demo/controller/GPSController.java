@@ -2,9 +2,14 @@ package com.example.demo.controller;
 
 import com.example.demo.service.IGPSService;
 import com.example.demo.utils.RequestUtils;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
@@ -18,8 +23,9 @@ public class GPSController {
     }
 
     @GetMapping(path = "/track/latest")
-    public ResponseEntity<Object> getLatestTrack() {
-        return RequestUtils.getResponse(gpsService.getLatestTrack());
+    public ResponseEntity<Object> getLatestTrack(@RequestParam("pageNumber") int pageNumber,
+                                                 @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
+        return RequestUtils.getResponse(gpsService.getLatestTrack(pageNumber, pageSize));
     }
 
     @PostMapping(path = "/upload")
@@ -28,7 +34,7 @@ public class GPSController {
     }
 
     @GetMapping(path = "/detail/{id}")
-    public ResponseEntity<Object> getTrackDetailByTrackId(@PathVariable("id") Long id) {
-        return RequestUtils.getResponse(gpsService.getGPXDetailByUserId(id));
+    public ResponseEntity<Object> getTrackDetailByGPSId(@PathVariable("id") Long id) {
+        return RequestUtils.getResponse(gpsService.getGPXDetailByGPSId(id));
     }
 }

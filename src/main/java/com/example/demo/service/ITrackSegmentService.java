@@ -1,4 +1,6 @@
 package com.example.demo.service;
 
-public interface ITrackSegmentService {
+import com.example.demo.domain.TrackSegment;
+
+public interface ITrackSegmentService extends IService<TrackSegment> {
 }

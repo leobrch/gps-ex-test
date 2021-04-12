@@ -1,6 +1,8 @@
 package com.example.demo.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +13,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -22,27 +24,40 @@ public class GPS extends AbstractEntity {
     private Metadata metadata;
 
     @OneToMany(mappedBy = "gpsWpt", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JsonManagedReference
     private List<Waypoint> wpt;
 
     @OneToMany(mappedBy="gpsTrk", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JsonManagedReference
     private List<Track> trk;
 
     @Column(name = "created_date")
-    private LocalDateTime createdDate;
+    private Date createdDate;
 
     @Column(name = "updated_date")
-    private LocalDateTime updatedDate;
+    private Date updatedDate;
+
+    public GPS() {
+    }
+
+    public GPS(Metadata metadata, List<Waypoint> wpt, List<Track> trk, Date createdDate, Date updatedDate) {
+        this.metadata = metadata;
+        this.wpt = wpt;
+        this.trk = trk;
+        this.createdDate = createdDate;
+        this.updatedDate = updatedDate;
+    }
 
     @PrePersist
     public void onCreate() {
-        LocalDateTime now = LocalDateTime.now();
+        Date now = new Date();
         this.createdDate = now;
         this.updatedDate = now;
     }
 
     @PreUpdate
     public void onUpdate() {
-        this.updatedDate = LocalDateTime.now();
+        this.updatedDate = new Date();
     }
 
     public Metadata getMetadata() {
@@ -69,19 +84,19 @@ public class GPS extends AbstractEntity {
         this.trk = trk;
     }
 
-    public LocalDateTime getCreatedDate() {
+    public Date getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
+    public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
 
-    public LocalDateTime getUpdatedDate() {
+    public Date getUpdatedDate() {
         return updatedDate;
     }
 
-    public void setUpdatedDate(LocalDateTime updatedDate) {
+    public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = updatedDate;
     }
 }

@@ -1,40 +1,18 @@
-package com.example.demo.domain;
+package com.example.demo.dto;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-@Entity
-@Table(name = "metadata")
-public class Metadata extends AbstractEntity {
-
-    @Column(name = "name")
+public class MetadataDTO implements Serializable {
+    private static final long serialVersionUID = 77241896792643835L;
     private String name;
-
-    @Column(name = "desc", length = 1000)
     private String desc;
-
-    @Column(name = "author")
     private String author;
-
-    @OneToMany(mappedBy = "metadata", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    @JsonManagedReference
-    private List<Link> link;
-
-    @Column(name = "time")
+    private List<LinkDTO> link;
     private Date time;
 
-    public Metadata() {
-    }
-
-    public Metadata(String name, String desc, String author, List<Link> link, Date time) {
+    public MetadataDTO(String name, String desc, String author, List<LinkDTO> link, Date time) {
         this.name = name;
         this.desc = desc;
         this.author = author;
@@ -66,11 +44,11 @@ public class Metadata extends AbstractEntity {
         this.author = author;
     }
 
-    public List<Link> getLink() {
+    public List<LinkDTO> getLink() {
         return link;
     }
 
-    public void setLink(List<Link> link) {
+    public void setLink(List<LinkDTO> link) {
         this.link = link;
     }
 

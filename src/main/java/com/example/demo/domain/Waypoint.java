@@ -1,12 +1,14 @@
 package com.example.demo.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "waypoint")
@@ -16,7 +18,7 @@ public class Waypoint extends AbstractEntity {
     private BigDecimal ele;
 
     @Column(name = "time")
-    private LocalDateTime time;
+    private Date time;
 
     @Column(name = "name")
     private String name;
@@ -32,19 +34,44 @@ public class Waypoint extends AbstractEntity {
 
     @ManyToOne
     @JoinColumn(name = "gps_id")
+    @JsonBackReference
     private GPS gpsWpt;
 
     @ManyToOne
     @JoinColumn(name = "trk_seg_id")
+    @JsonBackReference
     private TrackSegment trkSeg;
 
-    public Waypoint(BigDecimal ele, LocalDateTime time, String name, String sym, BigDecimal lat, BigDecimal lon) {
+    public Waypoint() {
+    }
+
+    public Waypoint(BigDecimal ele, Date time, String name, String sym, BigDecimal lat, BigDecimal lon) {
         this.ele = ele;
         this.time = time;
         this.name = name;
         this.sym = sym;
         this.lat = lat;
         this.lon = lon;
+    }
+
+    public Waypoint(BigDecimal ele, Date time, String name, String sym, BigDecimal lat, BigDecimal lon, GPS gpsWpt) {
+        this.ele = ele;
+        this.time = time;
+        this.name = name;
+        this.sym = sym;
+        this.lat = lat;
+        this.lon = lon;
+        this.gpsWpt = gpsWpt;
+    }
+
+    public Waypoint(BigDecimal ele, Date time, String name, String sym, BigDecimal lat, BigDecimal lon, TrackSegment trkSeg) {
+        this.ele = ele;
+        this.time = time;
+        this.name = name;
+        this.sym = sym;
+        this.lat = lat;
+        this.lon = lon;
+        this.trkSeg = trkSeg;
     }
 
     public BigDecimal getEle() {
@@ -55,11 +82,11 @@ public class Waypoint extends AbstractEntity {
         this.ele = ele;
     }
 
-    public LocalDateTime getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(LocalDateTime time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 

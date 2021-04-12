@@ -1,4 +1,6 @@
 package com.example.demo.service;
 
-public interface IWaypointService {
+import com.example.demo.domain.Waypoint;
+
+public interface IWaypointService extends IService<Waypoint> {
 }
