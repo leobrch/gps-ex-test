@@ -83,7 +83,7 @@
 						<source>src/main/resources/xsd/gpx.xsd</source>
 					</sources>
 
-					<packageName>com.example.demo.domain.jaxb2</packageName>
+					<packageName>com.gpx.exchange.domain.jaxb2</packageName>
 					<outputDirectory>${basedir}/src/main/java</outputDirectory>
 					<clearOutputDir>false</clearOutputDir>
 					<generateEpisode>false</generateEpisode>
